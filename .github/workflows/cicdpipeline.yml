@@ -13,16 +13,16 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    # Sync files dengan permission yang tepat
+    # Sync files dengan sudo agar punya akses tulis
     - name: Sync files
       run: |
-        rsync -avz --delete \
+        sudo rsync -avz --delete \
           --exclude='.env' \
           --exclude='.git' \
           --chown=www-data:www-data \
           ./ /var/www/html/
 
-    # Restart service tanpa sudo langsung
+    # Restart service dengan sudo
     - name: Restart services
       run: |
         sudo systemctl restart apache2
