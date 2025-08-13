@@ -1,0 +1,35 @@
+name: Internal Network Deployment
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: self-hosted  # Menggunakan runner lokal
+    environment: production
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'
+        extensions: mbstring, xml, mysql
+
+    - name: Install dependencies
+      run: composer install --no-dev --optimize-autoloader
+
+    - name: Sync files
+      run: |
+        rsync -avz --delete \
+          --exclude='.env' \
+          --exclude='.git' \
+          ./ /var/www/html/
+        
+    - name: Restart services
+      run: |
+        sudo chown -R www-data:www-data /var/www/html
+        sudo systemctl restart apache2
