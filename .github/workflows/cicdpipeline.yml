@@ -13,20 +13,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    # Persiapan sistem sebelum setup PHP
-    - name: Prepare system
-      run: |
-        sudo apt-get update -y
-        sudo apt-get install -y software-properties-common apt-transport-https ca-certificates lsb-release
-        sudo add-apt-repository ppa:ondrej/php -y
-        sudo apt-get update -y
-
-    # Setup PHP manual sebagai alternatif
-    - name: Install PHP manually
-      run: |
-        sudo apt-get install -y php8.2 php8.2-cli php8.2-mbstring php8.2-xml php8.2-mysql
-        php -v
-
     - name: Install dependencies
       run: composer install --no-dev --optimize-autoloader
 
