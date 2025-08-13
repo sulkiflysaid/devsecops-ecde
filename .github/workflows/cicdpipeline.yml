@@ -13,9 +13,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Install dependencies
-      run: composer install --no-dev --optimize-autoloader
-
     # Sync files dengan permission yang tepat
     - name: Sync files
       run: |
